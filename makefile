@@ -1,11 +1,11 @@
 PROGRAM   = fprog-project
 CXX       = clang++
 CXXFLAGS  = -g -std=c++17 -Wall
-INCLUDES = -I/home/fran/some_directory
+INCLUDES = -Irange-v3/include/
 
 
 $(PROGRAM): main.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) pythagoras.cpp -o $(PROGRAM)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) main.cpp -o $(PROGRAM)
 
 .PHONY: clean 
 

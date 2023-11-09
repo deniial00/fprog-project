@@ -13,11 +13,11 @@ Create your solution in C++, Haskell, F#, Java, Python, Groovy, Scala, or Lisp (
 
 4) Filter words: Create a function to filter words from a list based on another list. This function should use functional programming techniques, such as higher-order functions and lambdas, to perform filtering.
 
-5) Count occurrences: Create a function to count the occurrences of words in a list. This function should use the map-reduce philosophy and functional programming techniques to count word occurrences in a parallelizable and efficient manner.
+5) Count occurrences: Create a function to count the occurrences of words in a list. This function should use the map-reduce philosophy and functional programming techniques to count word occurrences in a parallelizable and efficient manner. **wie of kommen terms vor (absolut)**
 
-6) Calculate term density: Create a function to calculate the density of terms in a text, based on the occurrences of words and their relative distances to the next word of the same category. This function should use functional programming techniques and the map-reduce philosophy for parallelization and efficiency.
+6) Calculate term density: Create a function to calculate the density of terms in a text, based on the occurrences of words and their relative distances to the next word of the same category. This function should use functional programming techniques and the map-reduce philosophy for parallelization and efficiency. **wie oft kommen peace/war terms vor (relativ)**
 
-7) Read input files and tokenize: Read the input files (book, war terms, and peace terms) and tokenize their contents into words using the functions created in steps 2 and 3.
+7) Read input files and tokenize: Read the input files (book, war terms, and peace terms) and tokenize their contents into words using the functions created in steps 2 and 3. 
 
 8) Process chapters: Process each chapter in the book by calculating the density of war and peace terms using the functions created in steps 4, 5, and 6. Store the densities in separate vectors for further processing.
 

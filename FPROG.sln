@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{05DF8A2F-F2A6-4020-BCEF-BD843AA52EEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPROG.Tokenizer", "src\FPROG.Tokenizer\FPROG.Tokenizer.csproj", "{52377148-CD5B-476B-A84C-43B349CC4C8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPROG.Tokenizer.Test", "src\FPROG.Tokenizer.Test\FPROG.Tokenizer.Test.csproj", "{66D95369-BE4A-4986-A0D8-D12F6F2E4BBE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52377148-CD5B-476B-A84C-43B349CC4C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52377148-CD5B-476B-A84C-43B349CC4C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52377148-CD5B-476B-A84C-43B349CC4C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52377148-CD5B-476B-A84C-43B349CC4C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D95369-BE4A-4986-A0D8-D12F6F2E4BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D95369-BE4A-4986-A0D8-D12F6F2E4BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D95369-BE4A-4986-A0D8-D12F6F2E4BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D95369-BE4A-4986-A0D8-D12F6F2E4BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{52377148-CD5B-476B-A84C-43B349CC4C8B} = {05DF8A2F-F2A6-4020-BCEF-BD843AA52EEF}
+		{66D95369-BE4A-4986-A0D8-D12F6F2E4BBE} = {05DF8A2F-F2A6-4020-BCEF-BD843AA52EEF}
+	EndGlobalSection
+EndGlobal

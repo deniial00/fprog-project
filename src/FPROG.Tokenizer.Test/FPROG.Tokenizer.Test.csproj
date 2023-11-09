@@ -20,5 +20,5 @@
   <ItemGroup>
     <ProjectReference Include="..\FPROG.Tokenizer\FPROG.Tokenizer.csproj" />
   </ItemGroup>
-
+  
 </Project>

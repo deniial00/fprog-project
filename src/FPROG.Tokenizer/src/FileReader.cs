@@ -8,9 +8,8 @@ public class FileReader
     public FileReader(string searchFilePath, List<string> searchTermPaths)
     {
         SearchTerms = new Dictionary<string, List<string>>();
-        InitSearchTerms(searchFilePath, searchTermPaths);
+        InitSearchFileAndTerms(searchFilePath, searchTermPaths);
     }
-
 
     /// <summary>
     /// Non-pure function to initialize InputText and SearchTerms
@@ -18,7 +17,7 @@ public class FileReader
     /// <param name="searchFilePath"></param>
     /// <param name="searchTermPaths"></param>
     /// <returns>int</returns>
-    private void InitSearchTerms(string searchFilePath, List<string> searchTermPaths)
+    private void InitSearchFileAndTerms(string searchFilePath, List<string> searchTermPaths)
     {
         try {
             InputText = File.ReadAllText(searchFilePath);

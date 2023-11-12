@@ -1,4 +1,4 @@
-namespace FPROG.Tokenizer;
+namespace FPROG.Core;
 
 public class FileReader
 {
@@ -25,6 +25,9 @@ public class FileReader
             {
                 string text = File.ReadAllText(path);
                 string fileName = Path.GetFileName(path);
+                // man könnt sich überlegen, statt 'StringSplitOptions.None' 'StringSplitOptions.RemoveEmptyEntries' zu verwenden.
+                // macht von dem her keinen unterschied würd aber leere zeilen ignorieren.
+                // außerdem würd i das splitten generell noch weglassen und dafür eine eigene funktion machen, weil das prinzipiell auch gefordert ist.
                 List<string> terms = new(text.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
                 SearchTerms.Add(fileName, terms);
             }

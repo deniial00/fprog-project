@@ -1,2 +1,2 @@
 global using NUnit.Framework;
-global using FPROG.Tokenizer;
+global using FPROG.Core;

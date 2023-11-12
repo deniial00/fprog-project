@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: FPROG.ConsoleApp",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "cwd": "${workspaceFolder}\\src\\FPROG.ConsoleApp\\bin\\Debug\\net7.0\\",
+            "program": "${workspaceFolder}\\src\\FPROG.ConsoleApp\\bin\\Debug\\net7.0\\FPROG.ConsoleApp.dll",
+        }
+    ]
+}

@@ -1,127 +1,128 @@
-﻿using System.Collections.Concurrent;
-using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace FPROG.ConsoleApp;
+class Program
+{
+    static Func<string, List<string>> FileReader = (string filePath) =>
+    {
+        try
+        {
+            return File.ReadAllLines(filePath).ToList();
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Could not initialize files", e);
+        }
+    };
 
-class Program {
+    static Func<List<string>, List<string>> Tokenizer = (List<string> fileContent) =>
+        fileContent
+            .SelectMany(line => line.Split(new[] { ' ', '.', ',' }, StringSplitOptions.RemoveEmptyEntries))
+            .ToList();
+
+    static Func<List<string>, List<string>, List<string>> FilterWords = (List<string> listToFilter, List<string> filterList) =>
+        listToFilter
+            .Where(word => filterList.Contains(word))
+            .ToList();
+
+    static Func<List<string>, List<List<string>>> SplitIntoChapters = (List<string> inputText) =>
+    {
+        List<List<string>> chapters = new List<List<string>>();
+        List<string> currentChapter = new List<string>();
+
+        foreach (string word in inputText)
+        {
+            if (word.Contains("CHAPTER"))
+            {
+                if (currentChapter.Count > 0)
+                {
+                    chapters.Add(new List<string>(currentChapter));
+                    currentChapter = new List<string>();
+                }
+            }
+
+            currentChapter.Add(word);
+        }
+
+        if (currentChapter.Count > 0)
+        {
+            chapters.Add(new List<string>(currentChapter));
+        }
+
+        return chapters.Skip(1).ToList();
+    };
+
+    static Func<List<string>, List<string>, string> CategorizeChapter = (List<string> warTerms, List<string> peaceTerms) =>
+    {
+        string FormatTermResult(string termType, List<string> terms)
+        {
+            if (terms.Count == 0) return "";
+
+            string termResult = $"{termType} term count: {terms.Count}\n{termType} terms: ";
+            termResult += string.Join(", ", terms) + "\n";
+            return termResult;
+        }
+
+        string warTermResult = FormatTermResult("war", warTerms);
+        string peaceTermResult = FormatTermResult("peace", peaceTerms);
+
+        string result = warTerms.Count > peaceTerms.Count
+            ? "war-related\n" + warTermResult + peaceTermResult
+            : "peace-related\n" + warTermResult + peaceTermResult;
+
+        return result;
+    };
+
+
+    /*static Func<List<string>, List<string>, Dictionary<string, double>> CalculateTermDensity = (List<string> termList, List<string> filterList) =>
+    {
+        var distances = CalculateDistances(termList);
+
+        return distances.ToDictionary(
+            entry => entry.Key,
+            entry => entry.Value.Select((_, index) => index).Average()
+        );
+
+        Dictionary<string, List<int>> CalculateDistances(List<string> termOccurrences)
+        {
+            return termOccurrences
+                .GroupBy(word => word)
+                .ToDictionary(
+                    group => group.Key,
+                    group => Enumerable.Range(0, group.Count()).ToList()
+                );
+        }
+    };*/
+
     static void Main(string[] args)
     {
         const string warAndPeaceFilePath = @"war-and-peace.txt";
         const string warTermsFilePath = @"war-terms.txt";
         const string peaceTermsFilePath = @"peace-terms.txt";
 
-        Func<string, List<string>> FileReader = (string filePath) =>
+        List<string> warAndPieceContentTokenized = Tokenizer(FileReader(warAndPeaceFilePath));
+        List<string> warTermsTokenized = Tokenizer(FileReader(warTermsFilePath));
+        List<string> peaceTermsTokenized = Tokenizer(FileReader(peaceTermsFilePath));
+
+        List<List<string>> chapters = SplitIntoChapters(warAndPieceContentTokenized);
+
+        int cnt = 0;
+        chapters.ForEach(chapter =>
         {
-            try
-            {
-                List<string> result = new List<string>();
-                string[] fileLines = File.ReadAllLines(filePath);
-                result.AddRange(fileLines);
+            List<string> filteredWarTerms = FilterWords(chapter, warTermsTokenized);
+            List<string> filteredPeaceTerms = FilterWords(chapter, peaceTermsTokenized);
 
-                return result;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not initialize files", e);
-            }
-        };
+            /*Dictionary<string, double> warTermsDensity = CalculateTermDensity(filteredWarTerms, warTermsTokenized);
+            Dictionary<string, double> peaceTermsDensity = CalculateTermDensity(filteredPeaceTerms, peaceTermsTokenized);*/
 
-        Func<List<string>, List<string>> Tokenizer = (List<string> fileContent) =>
-        {
-            try
-            {
-                List<string> fileContentAsWords = new List<string>();
-                fileContent.ForEach(line => {
-                    string[] words = line.Split(new[] { ' ', '.', ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    fileContentAsWords.AddRange(words);
-                });
+            string chapterCategory = CategorizeChapter(filteredWarTerms, filteredPeaceTerms);
 
-                return fileContentAsWords;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not initialize files", e);
-            }
-        };
-
-        Func<List<string>, List<string>, List<string>> FilterWords = (List<string> listToFilter, List<string> filterList) =>
-        {
-            try
-            {
-                List<string> filteredWords = listToFilter
-                    .Where(word => filterList.Contains(word))
-                    .ToList();
-
-
-                return filteredWords;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Could not initialize files", e);
-            }
-        };
-
-        static Dictionary<string, int> CountWordOccurrences(List<string> wordList)
-        {
-            var wordOccurrences = new ConcurrentDictionary<string, int>();
-
-            // Use parallel processing to count occurrences efficiently
-            Parallel.ForEach(wordList, word =>
-            {
-                // Use AddOrUpdate to safely update the dictionary in parallel
-                wordOccurrences.AddOrUpdate(word, 1, (_, count) => count + 1);
-            });
-
-            // Convert ConcurrentDictionary to regular Dictionary
-            return wordOccurrences.ToDictionary(pair => pair.Key, pair => pair.Value);
-        }
-
-
-
-
-
-
-
-
-
-        List<string> warAndPieceContent = FileReader(warAndPeaceFilePath);
-        List<string> warTermsContent = FileReader(warTermsFilePath);
-        List<string> peaceTermsContent = FileReader(peaceTermsFilePath);
-
-        List<string> warAndPieceContentAsWords = Tokenizer(warAndPieceContent);
-
-        List<string> filteredWarTerms = FilterWords(warAndPieceContentAsWords, warTermsContent);
-        List<string> filteredPeaceTerms = FilterWords(warAndPieceContentAsWords, peaceTermsContent);
-
-        Dictionary<string, int> warTermsOccurences = CountWordOccurrences(filteredWarTerms);
-        Dictionary<string, int> peaceTermsOccurences = CountWordOccurrences(filteredPeaceTerms);
-
-        // warTermsContent.ForEach(line => { Console.WriteLine(line); });
-        // warAndPieceContentAsWords.ForEach(line => { Console.WriteLine(line); });
-         filteredWarTerms.ForEach(line => { Console.WriteLine(line); });
-        // filteredPeaceTerms.ForEach(line => { Console.WriteLine(line); });
-        /*foreach (var entry in warTermsOccurences)
-        {
-            Console.WriteLine($"{entry.Key}: {entry.Value} times");
-        }
-
-        foreach (var entry in peaceTermsOccurences)
-        {
-            Console.WriteLine($"{entry.Key}: {entry.Value} times");
-        }*/
-
-
-
-
-
-
-        // annahme man bekommt vom reader ein dictionary mit 3 strings zurück
-        /*Dictionary<string, string>? fileReaderResponse = new Dictionary<string, string>();
-        Dictionary<string, List<string>>? tokenizerResponse = Tokenizer.Tokenize(fileReaderResponse);
-        Dictionary<string, List<string>>? wordsFilterResponse = WordsFilter.FilterWords(tokenizerResponse);
-        // TODO: research mas mit map-reduce philosophy gmeint ist
-        OccurencesCounter.CountOccurrences();
-        TermDensityCalculator.CalculateTermDensity();
-        Console.WriteLine("Hello, World!");*/
+            /*Console.WriteLine($"Chapter {cnt + 1} - War Terms Density: {string.Join(", ", warTermsDensity)}");
+            Console.WriteLine($"Chapter {cnt + 1} - Peace Terms Density: {string.Join(", ", peaceTermsDensity)}");*/
+            Console.WriteLine($"Chapter {cnt + 1}: {chapterCategory}");
+            cnt++;
+        });
     }
 }
